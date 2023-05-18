@@ -19,6 +19,7 @@ features {}
 resource "azurerm_resource_group" "test-group" {
 name = var.name
 location = var.location
+create_duration = "60s"
 
 }
 
