@@ -21,17 +21,18 @@ name = var.name
 location = var.location
 create_duration = "60s"
 
-resource "null_resource" "previous" {}
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
+  triggers = {
+    "before" = "${null_resource.before.id}"
+  }
+}
 
-resource "time_sleep" "wait_300_seconds" {
-  depends_on = [null_resource.previous]
-
-  create_duration = "300s"
- }
-
-resource "null_resource" "next" {
-  depends_on = [time_sleep.wait_300_seconds]
- }
+resource "null_resource" "after" {
+  depends_on = ["null_resource.delay"]
+}
 }
 
 
